@@ -1,0 +1,10 @@
+{ "name"         : "lwink"
+, "description"  : "Lwink is a Twitter unique link tracker, expander and emitter"
+, "version"      : "0.0.1"
+, "author"       : "George Stagas <gstagas@gmail.com>"
+, "engines"      : { "node": ">=0.4.0" }
+, "dependencies" : { "ent": ">=0.0.2" }
+, "main"         : "./lwink"
+, "repository"   : { "type": "git", "url": "https://github.com/stagas/lwink" }
+, "bugs"         : { "web": "https://github.com/stagas/lwink/issues" }
+}
