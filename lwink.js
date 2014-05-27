@@ -3,20 +3,20 @@ var util = require('util')
   , qs = require('querystring')
   , parseUrl = require('url').parse
   , EventEmitter = require('events').EventEmitter
-  , ent
+  , he
 
 var urlRegexp = new RegExp('(?:(?:(?:https?|ftp|file)://|www\.|ftp\.)[-A-Z0-9+&@#/%?=~_|$!:,.;]*[-A-Z0-9+&@#/%=~_|$]\|((?:mailto:)?[A-Z0-9._%+-]+@[A-Z0-9._%-]+\.[A-Z]{2,4})\\b)|"(?:(?:https?|ftp|file)://|www\.|ftp\.)[^"\r\n]+"?|\'(?:(?:https?|ftp|file)://|www\.|ftp\.)[^\'\r\n]+\'?', 'gi')
 
 var Lwink = module.exports = function(q, opts) {
   if (!(this instanceof Lwink)) return new Lwink(q, opts)
-  
+
   EventEmitter.call(this)
-  
+
   this.q = q
   this.refresh_url = null
   this.stopped = true
   this.opts = opts || {}
-  if (this.opts.decodeEntities) ent = require('ent')
+  if (this.opts.decodeEntities) he = require('he')
   this.store = new Store(this.opts.store || new MemoryStore)
 }
 
@@ -95,7 +95,7 @@ Lwink.prototype.run = function(cb) {
         var tweet = data.results[urls[url]]
           , id = tweet.id_str
         var proceed = function() {
-          if (unique && self.opts.decodeEntities) tweets[id].text = ent.decode(tweets[id].text)
+          if (unique && self.opts.decodeEntities) tweets[id].text = he.decode(tweets[id].text)
           if (arr.length) {
             process.nextTick(function() {
               next(arr)
@@ -217,7 +217,7 @@ function translate(text, from, to, cb) {
         return cb && cb(e)
       }
       if (!data || data.responseStatus != 200
-        || !data.responseData || !data.responseData.translatedText 
+        || !data.responseData || !data.responseData.translatedText
         || !data.responseData.translatedText.length) {
         return cb && cb(new Error('Could not translate'))
       }
